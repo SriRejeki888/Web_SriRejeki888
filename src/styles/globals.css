@@ -1,0 +1,383 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --primary-color: #00897b; /* Warna teal utama */
+  --secondary-color: #4db6ac; /* Warna teal sekunder */
+  --cream-color: #FFF8E1; /* Warna cream sama dengan hero banner */
+  --red-color: #ff0000;
+  --green-color: var(--primary-color); /* Warna hijau sama dengan footer */
+  --text-color: #000000; /* Ubah menjadi hitam */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+    --text-color: #ededed;
+  }
+}
+
+body {
+  background: transparent !important;
+  color: var(--text-color);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Glass effect untuk container */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  color: var(--text-color);
+}
+
+.glass-effect * {
+  color: var(--text-color);
+}
+
+.glass-effect a, .glass-effect button {
+  color: inherit;
+}
+
+.glass-effect button.bg-\[var\(--primary-color\)\], 
+.glass-effect a.bg-\[var\(--primary-color\)\] {
+  color: white !important;
+}
+
+/* Glow effect untuk hover */
+.glow-on-hover:hover {
+  box-shadow: 0 0 15px rgba(0, 137, 123, 0.5);
+}
+
+/* Animated gradient border */
+.gradient-border {
+  position: relative;
+  border-radius: 1rem;
+  padding: 1px;
+  background: linear-gradient(60deg, var(--primary-color), var(--secondary-color), var(--cream-color), var(--primary-color));
+  background-size: 300% 300%;
+  animation: borderGradient 4s ease infinite;
+}
+
+@keyframes borderGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Pastikan teks dalam kontainer tertentu memiliki warna yang benar */
+.prose {
+  color: var(--text-color);
+}
+
+.prose p, .prose li, .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+  color: var(--text-color);
+}
+
+/* Tricolor background */
+.bg-tricolor {
+  background: transparent !important;
+  color: var(--text-color);
+}
+
+/* Ribbon style for best seller badge */
+.clip-path-ribbon {
+  position: relative;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 85%, 0 100%);
+  padding-bottom: 12px !important;
+  text-align: center;
+  min-width: 85px;
+  margin-bottom: 10px;
+}
+
+/* Best seller badge style - rectangular with no clip-path */
+.best-seller-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: var(--primary-color);
+  color: white;
+  font-weight: bold;
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Best seller circle stamp */
+.best-seller-circle {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 50px;
+  height: 50px;
+  background-color: var(--primary-color);
+  color: white;
+  font-weight: bold;
+  font-size: 0.6rem;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transform: rotate(10deg);
+  text-align: center;
+  line-height: 1;
+}
+
+/* Hero banner shine effect */
+.shine-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.shine-effect::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 100%
+  );
+  transform: rotate(30deg);
+  animation: shine 6s infinite linear;
+}
+
+@keyframes shine {
+  0% {
+    transform: rotate(30deg) translate(-100%, -100%);
+  }
+  100% {
+    transform: rotate(30deg) translate(100%, 100%);
+  }
+}
+
+/* Responsive adjustments */
+@media (min-width: 640px) { /* sm breakpoint */
+  .best-seller-circle {
+    top: -10px;
+    right: -10px;
+    width: 60px;
+    height: 60px;
+    font-size: 0.65rem;
+  }
+}
+
+/* Hero banner style */
+.hero-banner {
+  position: relative;
+  overflow: hidden;
+  min-height: 180px;
+  display: flex;
+  align-items: center;
+  background: transparent !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.hero-banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 30% 50%, var(--primary-color) 0%, transparent 50%);
+  opacity: 0.05;
+  pointer-events: none;
+}
+
+/* Menu title style */
+.menu-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--primary-color);
+  position: relative;
+  display: inline-block;
+}
+
+.menu-title::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 40%;
+  height: 3px;
+  background: var(--secondary-color);
+  border-radius: 2px;
+}
+
+@media (min-width: 768px) {
+  .menu-title {
+    font-size: 2rem;
+  }
+}
+
+/* Navigation item */
+.nav-item {
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.nav-item:hover {
+  color: var(--primary-color);
+}
+
+/* Card separator */
+.card-separator {
+  height: 1px;
+  background-color: #f0f0f0;
+  margin: 12px 0;
+}
+
+/* Card hover effects */
+.card-hover-effect {
+  transition: all 0.3s ease;
+}
+
+.card-hover-effect:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary-color);
+}
+
+/* Loading animation */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.loading-shimmer {
+  background: linear-gradient(90deg, 
+    #f0f0f0 25%, 
+    #e0e0e0 50%, 
+    #f0f0f0 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Price tag animation */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.price-tag-pulse {
+  animation: pulse 2s infinite;
+}
+
+/* Override untuk semua teks dalam body */
+body, p, h1, h2, h3, h4, h5, h6, li, span, div {
+  color: var(--text-color);
+}
+
+/* Override untuk elemen dalam kontainer putih */
+.bg-white *, .glass-effect * {
+  color: #000000 !important;
+}
+
+.bg-white a, .bg-white button, .glass-effect a, .glass-effect button {
+  color: inherit;
+}
+
+/* Pengecualian untuk teks yang memang harus putih (pada tombol berwarna) */
+.bg-white .text-white, 
+.glass-effect .text-white,
+button.bg-\[var\(--primary-color\)\] span, 
+a.bg-\[var\(--primary-color\)\] span,
+.bg-\[var\(--primary-color\)\] *,
+[class*="bg-[var(--primary-color)]"] * {
+  color: white !important;
+}
+
+/* Overrides warna teks grey */
+.bg-white .text-gray-500, .glass-effect .text-gray-500 {
+  color: #6b7280 !important;
+}
+.bg-white .text-gray-600, .glass-effect .text-gray-600 {
+  color: #4b5563 !important;
+}
+.bg-white .text-gray-700, .glass-effect .text-gray-700 {
+  color: #374151 !important;
+}
+.bg-white .text-gray-800, .glass-effect .text-gray-800 {
+  color: #1f2937 !important;
+}
+.bg-white .text-gray-900, .glass-effect .text-gray-900 {
+  color: #111827 !important;
+}
+
+/* Memastikan teks tombol dengan latar belakang warna terlihat */
+button.bg-\[var\(--primary-color\)\], 
+a.bg-\[var\(--primary-color\)\],
+.bg-\[var\(--primary-color\)\],
+[class*="bg-[var(--primary-color)]"] {
+  color: white !important;
+}
+
+/* Override untuk elemen code */
+code {
+  background-color: #f3f4f6;
+  color: #1f2937 !important;
+  padding: 0.1rem 0.2rem;
+  border-radius: 0.25rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.875em;
+}
+
+/* Hapus atau ubah background pada elemen utama jika ada */
+.main-container, .content, .section, .page-bg, .app-bg {
+  background: transparent !important;
+}
+
+html, body {
+  overflow-x: hidden !important;
+  width: 100vw;
+  max-width: 100vw;
+}
