@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Latar belakang transparan secara eksplisit -->
+  <rect width="200" height="200" fill="none"/>
+    
+  <!-- Garis horizontal bawah -->
+  <line x1="30" y1="140" x2="170" y2="140" stroke="#333" stroke-width="1" />
+  
+  <!-- Path untuk text "Kedai Kopi & Teh" -->
+  <path id="topArc" d="M 40 70 A 150 150 0 0 1 160 70" fill="none" />
+  <text>
+    <textPath href="#topArc" startOffset="50%" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000">Kedai Kopi &amp; Teh</textPath>
+  </text>
+  
+  <!-- Text "SRI REJEKI" -->
+  <text x="100" y="100" font-family="'Arial Black', Helvetica, sans-serif" font-size="28" font-weight="bold" text-anchor="middle" fill="#FF0000">SRI REJEKI</text>
+  
+  <!-- Text "888" -->
+  <text x="100" y="130" font-family="'Arial Black', Helvetica, sans-serif" font-size="36" font-weight="bold" text-anchor="middle" fill="#FF0000">888</text>
+  
+  <!-- Text "BERDIRI SEJAK TADI PAGI" -->
+  <text x="100" y="165" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#000">BERDIRI SEJAK TADI PAGI</text>
+</svg> 

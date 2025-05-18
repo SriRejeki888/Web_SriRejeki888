@@ -1,0 +1,28 @@
+<svg width="300" height="300" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background arch text path -->
+  <path id="topArc" d="M150,50 A100,100 0 0,1 250,150" fill="none" />
+  <path id="bottomArc" d="M150,250 A100,100 0 0,0 250,150" fill="none" />
+  
+  <!-- Logo text -->
+  <text>
+    <textPath href="#topArc" startOffset="25%" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#000">
+      Kedai Kopi &amp; Teh
+    </textPath>
+  </text>
+  
+  <text>
+    <textPath href="#bottomArc" startOffset="15%" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000">
+      BERDIRI SEJAK TADI PAGI
+    </textPath>
+  </text>
+  
+  <!-- Main title -->
+  <text x="150" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="36" font-weight="bold" fill="#FF0000">SRI REJEKI</text>
+  
+  <!-- Number -->
+  <text x="150" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="#FF0000">888</text>
+  
+  <!-- Horizontal lines -->
+  <line x1="50" y1="145" x2="100" y2="145" stroke="#000" stroke-width="2" />
+  <line x1="200" y1="145" x2="250" y2="145" stroke="#000" stroke-width="2" />
+</svg> 
