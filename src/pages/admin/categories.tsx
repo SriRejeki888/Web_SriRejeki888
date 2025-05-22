@@ -333,17 +333,6 @@ const AdminCategories = () => {
                       required
                     />
                   </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      ID Kategori
-                    </label>
-                    <input
-                      type="text"
-                      value={editingId}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100"
-                      disabled
-                    />
-                  </div>
                 </div>
                 <div className="mt-4 flex justify-end space-x-2">
                   <button
