@@ -124,35 +124,24 @@ const AdminCategories = () => {
   const handleUpdateCategory = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!categoryName.trim() || !categoryKey.trim() || !editingId) {
-      setError('Nama dan key kategori harus diisi');
+    if (!categoryName.trim() || !editingId) {
+      setError('Nama kategori harus diisi');
       return;
     }
-    
-    // Format key: uppercase dan ganti spasi dengan underscore
-    const formattedKey = formatCategoryKey(categoryKey);
     
     try {
       setLoading(true);
       
-      // Cek jika key yang baru sudah ada (dan berbeda dari key saat ini)
-      if (formattedKey !== editingId && categories.some(cat => cat.key === formattedKey)) {
-        setError(`Kategori dengan key ${formattedKey} sudah ada`);
-        setLoading(false);
-        return;
-      }
+      console.log(`Mengupdate kategori ${editingId} dengan nama ${categoryName}`);
       
-      console.log(`Mengupdate kategori dari ${editingId} ke ${formattedKey} - ${categoryName}`);
-      
-      // Update kategori di JSONBin
-      const result = await updateCategory(editingId, formattedKey, categoryName);
+      // Update kategori di JSONBin - hanya mengubah nama, ID tetap sama
+      const result = await updateCategory(editingId, editingId, categoryName);
       
       if (result.success) {
         // Reload kategori dari server
         await fetchCategories();
         
         // Reset form
-        setCategoryKey('');
         setCategoryName('');
         setEditingId(null);
         setError(null);
@@ -170,7 +159,6 @@ const AdminCategories = () => {
   // Edit kategori
   const handleEditCategory = (category: CategoryItem) => {
     setEditingId(category.key);
-    setCategoryKey(category.key);
     setCategoryName(category.name);
     setIsAdding(false);
   };
@@ -257,168 +245,195 @@ const AdminCategories = () => {
           </div>
         </header>
 
-        <main className="container mx-auto px-4 py-6">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-lg font-semibold text-gray-800">Daftar Kategori</h2>
-            {!isAdding && !editingId && !loading && (
-              <button
-                onClick={startAddCategory}
-                className="px-4 py-2 bg-green-600 text-white rounded-md flex items-center hover:bg-green-700 transition-colors"
-              >
-                <FiPlus className="mr-2" /> Tambah Kategori
-              </button>
-            )}
-          </div>
-
+        <main className="container mx-auto px-4 py-8">
           {error && (
-            <div className="bg-red-50 text-red-600 p-3 rounded-md mb-4">
+            <div className="bg-red-50 text-red-600 p-4 rounded-lg mb-6">
               {error}
             </div>
           )}
-
-          {(isAdding || editingId) && (
-            <div className="bg-white p-6 rounded-lg shadow-sm mb-6">
-              <h3 className="text-md font-semibold mb-4">
-                {editingId ? 'Edit Kategori' : 'Tambah Kategori Baru'}
-              </h3>
-              <form onSubmit={editingId ? handleUpdateCategory : handleAddCategory}>
-                <div className="mb-4">
-                  <label htmlFor="categoryName" className="block text-sm font-medium text-gray-700 mb-1">
-                    Nama Kategori
-                  </label>
-                  <input
-                    type="text"
-                    id="categoryName"
-                    name="categoryName"
-                    value={categoryName}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-[var(--primary-color)] focus:border-transparent"
-                    placeholder="Nama kategori (contoh: Kopi)"
-                    required
-                    disabled={loading}
-                  />
+          
+          <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-lg font-semibold text-gray-800">Daftar Kategori</h2>
+              <button
+                onClick={startAddCategory}
+                className="flex items-center px-4 py-2 bg-[var(--primary-color)] text-white rounded-lg hover:bg-[#b71c1c] transition-colors"
+              >
+                <FiPlus className="mr-2" /> Tambah Kategori
+              </button>
+            </div>
+            
+            {isAdding && (
+              <form onSubmit={handleAddCategory} className="mb-6 p-4 bg-gray-50 rounded-lg">
+                <h3 className="text-lg font-medium mb-4">Tambah Kategori Baru</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Nama Kategori
+                    </label>
+                    <input
+                      type="text"
+                      name="categoryName"
+                      value={categoryName}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent"
+                      placeholder="Contoh: Minuman Panas"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      ID Kategori (Otomatis)
+                    </label>
+                    <input
+                      type="text"
+                      name="categoryKey"
+                      value={categoryKey}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100"
+                      placeholder="Contoh: MINUMAN_PANAS"
+                      disabled
+                    />
+                  </div>
                 </div>
-                <div className="mb-6">
-                  <label htmlFor="categoryKey" className="block text-sm font-medium text-gray-700 mb-1">
-                    Key Kategori
-                  </label>
-                  <input
-                    type="text"
-                    id="categoryKey"
-                    name="categoryKey"
-                    value={categoryKey}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md uppercase focus:outline-none focus:ring-1 focus:ring-[var(--primary-color)] focus:border-transparent"
-                    placeholder="Key kategori (contoh: KOPI)"
-                    required
-                    disabled={loading}
-                  />
-                  <p className="mt-1 text-sm text-gray-500">
-                    Key kategori akan otomatis diubah menjadi uppercase dan spasi akan diganti dengan underscore
-                  </p>
-                </div>
-                <div className="flex justify-end space-x-3">
+                <div className="mt-4 flex justify-end space-x-2">
                   <button
                     type="button"
                     onClick={handleCancelEdit}
-                    className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-colors"
-                    disabled={loading}
+                    className="px-4 py-2 text-gray-600 hover:text-gray-800"
                   >
                     Batal
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 bg-[var(--primary-color)] text-white rounded-md hover:bg-[#b71c1c] transition-colors flex items-center"
+                    className="px-4 py-2 bg-[var(--primary-color)] text-white rounded-lg hover:bg-[#b71c1c] transition-colors"
                     disabled={loading}
                   >
-                    {loading ? (
-                      <>
-                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        {editingId ? 'Menyimpan...' : 'Menambahkan...'}
-                      </>
-                    ) : (
-                      <>
-                        <FiSave className="mr-2" /> {editingId ? 'Simpan Perubahan' : 'Simpan Kategori'}
-                      </>
-                    )}
+                    {loading ? 'Menyimpan...' : 'Simpan'}
                   </button>
                 </div>
               </form>
-            </div>
-          )}
-
-          {loading && !isAdding && !editingId ? (
-            <div className="bg-white p-8 rounded-lg shadow-sm text-center">
-              <svg className="animate-spin mx-auto h-8 w-8 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
-              <p className="mt-3 text-gray-600">Memuat data kategori...</p>
-            </div>
-          ) : (
-            <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-              {categories.length === 0 && !loading ? (
-                <div className="p-8 text-center text-gray-500">
-                  <p>Belum ada kategori. Silakan tambahkan kategori baru.</p>
+            )}
+            
+            {editingId && (
+              <form onSubmit={handleUpdateCategory} className="mb-6 p-4 bg-gray-50 rounded-lg">
+                <h3 className="text-lg font-medium mb-4">Edit Kategori</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Nama Kategori
+                    </label>
+                    <input
+                      type="text"
+                      name="categoryName"
+                      value={categoryName}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent"
+                      placeholder="Contoh: Minuman Panas"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      ID Kategori
+                    </label>
+                    <input
+                      type="text"
+                      value={editingId}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100"
+                      disabled
+                    />
+                  </div>
                 </div>
-              ) : (
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Nama Kategori
-                      </th>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Key
-                      </th>
-                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Jumlah Menu
-                      </th>
-                      <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Aksi
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {categories.map((category) => (
-                      <tr key={category.key} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-900">{category.name}</div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm font-mono text-gray-600">{category.key}</div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-500">{category.menuCount || 0}</div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                          <div className="flex justify-end space-x-2">
-                            <button
-                              onClick={() => handleEditCategory(category)}
-                              className="text-blue-600 hover:text-blue-800"
-                              disabled={loading}
-                            >
-                              <FiEdit />
-                            </button>
-                            <button
-                              onClick={() => handleDeleteCategory(category.key, category.name, category.menuCount)}
-                              className="text-red-600 hover:text-red-800"
-                              disabled={loading}
-                            >
-                              <FiTrash2 />
-                            </button>
-                          </div>
-                        </td>
+                <div className="mt-4 flex justify-end space-x-2">
+                  <button
+                    type="button"
+                    onClick={handleCancelEdit}
+                    className="px-4 py-2 text-gray-600 hover:text-gray-800"
+                  >
+                    Batal
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-[var(--primary-color)] text-white rounded-lg hover:bg-[#b71c1c] transition-colors"
+                    disabled={loading}
+                  >
+                    {loading ? 'Menyimpan...' : 'Simpan'}
+                  </button>
+                </div>
+              </form>
+            )}
+            
+            {loading && !isAdding && !editingId ? (
+              <div className="bg-white p-8 rounded-lg shadow-sm text-center">
+                <svg className="animate-spin mx-auto h-8 w-8 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <p className="mt-3 text-gray-600">Memuat data kategori...</p>
+              </div>
+            ) : (
+              <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+                {categories.length === 0 && !loading ? (
+                  <div className="p-8 text-center text-gray-500">
+                    <p>Belum ada kategori. Silakan tambahkan kategori baru.</p>
+                  </div>
+                ) : (
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Nama Kategori
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Key
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Jumlah Menu
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Aksi
+                        </th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              )}
-            </div>
-          )}
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {categories.map((category) => (
+                        <tr key={category.key} className="hover:bg-gray-50">
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-sm text-gray-900">{category.name}</div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-sm font-mono text-gray-600">{category.key}</div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-sm text-gray-500">{category.menuCount || 0}</div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <div className="flex justify-end space-x-2">
+                              <button
+                                onClick={() => handleEditCategory(category)}
+                                className="text-blue-600 hover:text-blue-800"
+                                disabled={loading}
+                              >
+                                <FiEdit />
+                              </button>
+                              <button
+                                onClick={() => handleDeleteCategory(category.key, category.name, category.menuCount)}
+                                className="text-red-600 hover:text-red-800"
+                                disabled={loading}
+                              >
+                                <FiTrash2 />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
+              </div>
+            )}
+          </div>
         </main>
       </div>
     </AuthCheck>
