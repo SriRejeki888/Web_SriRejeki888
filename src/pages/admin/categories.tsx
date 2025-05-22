@@ -268,11 +268,12 @@ const AdminCategories = () => {
                 <h3 className="text-lg font-medium mb-4">Tambah Kategori Baru</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label htmlFor="addCategoryName" className="block text-sm font-medium text-gray-700 mb-2">
                       Nama Kategori
                     </label>
                     <input
                       type="text"
+                      id="addCategoryName"
                       name="categoryName"
                       value={categoryName}
                       onChange={handleInputChange}
@@ -282,11 +283,12 @@ const AdminCategories = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label htmlFor="addCategoryKey" className="block text-sm font-medium text-gray-700 mb-2">
                       ID Kategori (Otomatis)
                     </label>
                     <input
                       type="text"
+                      id="addCategoryKey"
                       name="categoryKey"
                       value={categoryKey}
                       onChange={handleInputChange}
@@ -318,13 +320,14 @@ const AdminCategories = () => {
             {editingId && (
               <form onSubmit={handleUpdateCategory} className="mb-6 p-4 bg-gray-50 rounded-lg">
                 <h3 className="text-lg font-medium mb-4">Edit Kategori</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label htmlFor="editCategoryName" className="block text-sm font-medium text-gray-700 mb-2">
                       Nama Kategori
                     </label>
                     <input
                       type="text"
+                      id="editCategoryName"
                       name="categoryName"
                       value={categoryName}
                       onChange={handleInputChange}
