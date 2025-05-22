@@ -23,6 +23,7 @@ const AdminDashboard = () => {
   const [error, setError] = useState('');
   const [isMobile, setIsMobile] = useState(false);
   const [activeTab, setActiveTab] = useState('menu');
+  const [searchTerm, setSearchTerm] = useState('');
   const router = useRouter();
 
   useEffect(() => {
@@ -94,6 +95,14 @@ const AdminDashboard = () => {
 
   const categoryCount = getMenuCountByCategory();
   const categoryData = Object.entries(categoryCount).map(([category, count]) => ({ category, count }));
+
+  // Filter menu items berdasarkan search term
+  const filteredMenuItems = menuItems.filter(item =>
+    // Tambahkan pemeriksaan untuk properti yang mungkin undefined atau null
+    (item.title?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+    (item.description?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+    (item.category?.toLowerCase() || '').includes(searchTerm.toLowerCase())
+  );
 
   return (
     <AuthCheck>
@@ -289,6 +298,19 @@ const AdminDashboard = () => {
               <div className="flex flex-col sm:flex-row justify-between items-center">
                 <h2 className="text-lg font-semibold text-gray-800 mb-4 sm:mb-0">Daftar Menu</h2>
                 <div className="flex items-center">
+                  {/* Search Bar */}
+                  <div className="relative mr-4">
+                    <input
+                      type="text"
+                      placeholder="Cari menu..."
+                      className="pl-10 pr-4 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent"
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                  </div>
                   <button 
                     onClick={() => setActiveTab('menu')}
                     className={`mr-2 px-3 py-1 rounded-md ${activeTab === 'menu' ? 'bg-gray-200 text-gray-800' : 'text-gray-600 hover:bg-gray-100'}`}
@@ -347,7 +369,7 @@ const AdminDashboard = () => {
                   {/* Tampilan Grid */}
                   {activeTab === 'menu' && (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
-                      {menuItems.map((item) => (
+                      {filteredMenuItems.map((item) => (
                         <motion.div 
                           key={item.id} 
                           className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden"
@@ -420,7 +442,7 @@ const AdminDashboard = () => {
                           </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                          {menuItems.map((item) => (
+                          {filteredMenuItems.map((item) => (
                             <tr key={item.id} className="hover:bg-gray-50">
                               <td className="px-6 py-4 whitespace-nowrap">
                                 <div className="flex items-center">
